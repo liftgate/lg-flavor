@@ -1,4 +1,4 @@
-package gg.scala.flavor.service.ignore
+package io.liftgate.flavor.service.ignore
 
 /**
  * @author GrowlyX

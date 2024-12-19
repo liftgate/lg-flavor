@@ -1,6 +1,6 @@
-package gg.scala.flavor.binder
+package io.liftgate.flavor.binder
 
-import gg.scala.flavor.FlavorBinder
+import io.liftgate.flavor.FlavorBinder
 
 /**
  * @author GrowlyX

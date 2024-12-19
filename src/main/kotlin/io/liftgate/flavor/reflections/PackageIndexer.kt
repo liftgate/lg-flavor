@@ -1,6 +1,6 @@
-package gg.scala.flavor.reflections
+package io.liftgate.flavor.reflections
 
-import gg.scala.flavor.FlavorOptions
+import io.liftgate.flavor.FlavorOptions
 import org.reflections.Reflections
 import org.reflections.Store
 import org.reflections.scanners.MethodAnnotationsScanner

@@ -1,4 +1,4 @@
-package gg.scala.flavor.inject
+package io.liftgate.flavor.inject
 
 /**
  * @author GrowlyX

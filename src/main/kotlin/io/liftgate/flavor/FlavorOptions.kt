@@ -1,4 +1,4 @@
-package gg.scala.flavor
+package io.liftgate.flavor
 
 import java.util.logging.Logger
 

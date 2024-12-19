@@ -1,13 +1,13 @@
-package gg.scala.flavor
+package io.liftgate.flavor
 
-import gg.scala.flavor.binder.FlavorBinderContainer
-import gg.scala.flavor.inject.Inject
-import gg.scala.flavor.inject.InjectScope
-import gg.scala.flavor.reflections.PackageIndexer
-import gg.scala.flavor.service.Close
-import gg.scala.flavor.service.Configure
-import gg.scala.flavor.service.Service
-import gg.scala.flavor.service.ignore.IgnoreAutoScan
+import io.liftgate.flavor.binder.FlavorBinderContainer
+import io.liftgate.flavor.inject.Inject
+import io.liftgate.flavor.inject.InjectScope
+import io.liftgate.flavor.reflections.PackageIndexer
+import io.liftgate.flavor.service.Close
+import io.liftgate.flavor.service.Configure
+import io.liftgate.flavor.service.Service
+import io.liftgate.flavor.service.ignore.IgnoreAutoScan
 import java.lang.reflect.Method
 import java.util.logging.Level
 import kotlin.reflect.KClass

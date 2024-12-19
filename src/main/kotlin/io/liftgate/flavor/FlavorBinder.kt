@@ -1,6 +1,6 @@
-package gg.scala.flavor
+package io.liftgate.flavor
 
-import gg.scala.flavor.inject.InjectScope
+import io.liftgate.flavor.inject.InjectScope
 import kotlin.properties.Delegates
 import kotlin.reflect.KClass
 

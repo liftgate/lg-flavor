@@ -5,8 +5,8 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "1.7.10"
 }
 
-group "gg.scala.flavor"
-version "0.1.6"
+group "io.liftgate.flavor"
+version "0.1.7"
 
 repositories {
     mavenCentral()
@@ -43,7 +43,7 @@ publishing {
 
     repositories {
         maven {
-            name "scala"
+            name "liftgate"
             url "${artifactory_contextUrl}/${artifactory_release}"
             credentials {
                 username "${artifactory_user}"
@@ -68,5 +68,5 @@ artifactory {
 
 tasks.build.dependsOn(
     shadowJar,
-    publishShadowPublicationToScalaRepository
+    publishShadowPublicationToLiftgateRepository
 )

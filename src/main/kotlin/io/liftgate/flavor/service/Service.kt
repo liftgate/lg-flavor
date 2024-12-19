@@ -1,4 +1,4 @@
-package gg.scala.flavor.service
+package io.liftgate.flavor.service
 
 /**
  * Marks a class as a flavor Service.
