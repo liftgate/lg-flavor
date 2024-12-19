@@ -1,11 +1,15 @@
 package gg.scala.flavor
 
 import gg.scala.flavor.binder.FlavorBinderContainer
-import gg.scala.flavor.mappings.AnnotationMappings
+import gg.scala.flavor.inject.Inject
 import gg.scala.flavor.mappings.AnnotationType
+import gg.scala.flavor.mappings.InjectAnnotationMappings
 import gg.scala.flavor.reflections.PackageIndexer
+import gg.scala.flavor.service.Close
+import gg.scala.flavor.service.Configure
 import gg.scala.flavor.service.Service
 import gg.scala.flavor.service.ignore.IgnoreAutoScan
+import java.lang.IllegalStateException
 import java.lang.reflect.Method
 import java.util.logging.Level
 import kotlin.reflect.KClass
@@ -64,22 +68,6 @@ class Flavor(
      */
     fun inherit(container: FlavorBinderContainer): Flavor
     {
-        container.javaClass.methods
-            .filter {
-                AnnotationMappings.matchesAny(AnnotationType.Extract, it.annotations)
-            }
-            .forEach {
-                this.binders += FlavorBinder(it.returnType.kotlin) to it.invoke(container)
-            }
-
-        container.javaClass.fields
-            .filter {
-                AnnotationMappings.matchesAny(AnnotationType.Extract, it.annotations)
-            }
-            .forEach {
-                this.binders += FlavorBinder(it.type.kotlin) to it.get(container)
-            }
-
         container.populate()
         binders += container.binders
         return this
@@ -130,7 +118,7 @@ class Flavor(
 
         val constructor = T::class.java.constructors
             .firstOrNull {
-                AnnotationMappings
+                InjectAnnotationMappings
                     .matchesAny(
                         AnnotationType.Inject, it.annotations
                     ) &&
@@ -213,9 +201,7 @@ class Flavor(
         for (entry in services.entries)
         {
             val close = entry.key.java.declaredMethods
-                .firstOrNull {
-                    AnnotationMappings.matchesAny(AnnotationType.PreDestroy, it.annotations)
-                }
+                .firstOrNull { it.isAnnotationPresent(Close::class.java) }
 
             val service = entry.key.java
                 .getDeclaredAnnotation(Service::class.java)
@@ -318,7 +304,7 @@ class Flavor(
         {
             // making sure this field is annotated with
             // Inject before modifying its value.
-            if (AnnotationMappings.matchesAny(AnnotationType.Inject, field.annotations))
+            if (InjectAnnotationMappings.matchesAny(AnnotationType.Inject, field.annotations))
             {
                 val injectionInstance = this
                     .findInstanceForInjection(
@@ -335,21 +321,6 @@ class Flavor(
 
         for (method in clazz.java.declaredMethods)
         {
-            if (
-                AnnotationMappings.matchesAny(
-                    AnnotationType.Inject, method.annotations
-                ) && method.parameterCount == 1
-            )
-            {
-                val injectionInstance = this
-                    .findInstanceForInjection(
-                        method.parameterTypes.first(),
-                        method.annotations
-                    )
-
-                method.invoke(singleton, injectionInstance)
-            }
-
             val annotations = method.annotations
                 .filter {
                     scanners[it::class] != null
@@ -379,9 +350,7 @@ class Flavor(
         if (isServiceClazz)
         {
             val configure = clazz.java.declaredMethods
-                .firstOrNull {
-                    AnnotationMappings.matchesAny(AnnotationType.PostConstruct, it.annotations)
-                }
+                .firstOrNull { it.isAnnotationPresent(Configure::class.java) }
 
             // singletons should always be non-null
             services[clazz] = singleton

@@ -8,8 +8,7 @@ package gg.scala.flavor.inject
     AnnotationTarget.FIELD,
     AnnotationTarget.VALUE_PARAMETER,
     AnnotationTarget.PROPERTY_GETTER,
-    AnnotationTarget.CONSTRUCTOR,
-    AnnotationTarget.FUNCTION,
+    AnnotationTarget.CONSTRUCTOR
 )
 @Retention(AnnotationRetention.RUNTIME)
 annotation class Inject
